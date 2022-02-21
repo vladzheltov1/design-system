@@ -1,0 +1,85 @@
+@import "@/styles/var.module.scss";
+
+// Стандартный стиль, которой задаёт кнопке форму, в том числе отступы, границу и тп
+%button {
+    border: none;
+    padding: 10px 22px;
+    color: $gray-0;
+    font-size: $font-size-14;
+    border-radius: 5px;
+    transition-duration: 0.2s;
+    font-weight: $font-weight-bold;
+    &:hover {
+        cursor: pointer;
+    }
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.8;
+    }
+}
+
+// Стиль, который подключается, когда кнопке задан параметр `ghost`
+%button_ghost {
+    color: $gray-100;
+    background-color: $gray-0 !important;
+    box-shadow: inset 0 0 0 2px $gray-80;
+}
+
+// Абстракция, которая реализует логику по смене цветов при наведении
+@mixin set_color($color, $color-hover) {
+    background-color: $color;
+    &:hover {
+        background-color: $color-hover;
+    }
+}
+// Абстракция, которая реализует логику по смене цветов при активном состоянии `ghost`
+@mixin set_ghost($accent_color) {
+    @extend %button_ghost;
+    box-shadow: inset 0 0 0 2px $accent_color;
+
+    &:hover {
+        color: $gray-0;
+        background-color: $accent_color !important;
+    }
+}
+
+// Классы, которые подлючаются в зависимости от различных параметров
+
+.button {
+    @extend %button;
+}
+.button_primary {
+    @include set_color($blue-100, $blue-80);
+    &_ghost {
+        @include set_ghost($blue-100);
+    }
+}
+.button_secondary {
+    @include set_color(#f0f0f0, #e2e2e2);
+    color: $gray-80;
+    // Нам не нужно состояние `ghost` - кнопка и так прозрачная
+}
+.button_success {
+    @include set_color($green-100, $green-80);
+    &_ghost {
+        @include set_ghost($green-100);
+    }
+}
+.button_warning {
+    @include set_color($orange-100, $orange-80);
+    &_ghost {
+        @include set_ghost($orange-100);
+    }
+}
+.button_danger {
+    @include set_color($red-100, $red-80);
+    &_ghost {
+        @include set_ghost($red-100);
+    }
+}
+.button_dark {
+    @include set_color($gray-80, $gray-80);
+    &_ghost {
+        @include set_ghost($gray-80);
+    }
+}
